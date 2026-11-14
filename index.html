@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#603585" />
+  <title>Un universo para ti 💜</title>
+
+  <style>
+    :root {
+      --fondo: #f8f2ff;
+      --papel: #fffaff;
+      --purpura: #8052a5;
+      --purpura-oscuro: #542b72;
+      --purpura-claro: #eee1fa;
+      --tinta: #40334a;
+      --suave: #786b82;
+      --borde: #e6d8f0;
+      --sombra: 0 12px 32px rgba(79, 45, 104, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--tinta);
+      background:
+        radial-gradient(ellipse at 10% 0%, #ead9fb 0, transparent 34rem),
+        radial-gradient(ellipse at 100% 30%, #f5e5f5 0, transparent 28rem),
+        var(--fondo);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    button, input { font: inherit; }
+
+    .contenedor {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .portada {
+      position: relative;
+      overflow: hidden;
+      padding: 48px 0 54px;
+      color: white;
+      background: linear-gradient(135deg, #44245e, #8052a5 58%, #b17bc2);
+    }
+
+    .portada::before,
+    .portada::after {
+      position: absolute;
+      color: rgba(255,255,255,.13);
+      font-size: 130px;
+      pointer-events: none;
+    }
+
+    .portada::before { content: "♡"; top: -25px; left: 3%; }
+    .portada::after { content: "♡"; right: 3%; bottom: -36px; }
+
+    .portada-interior {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .portada-texto { padding: 20px 0; }
+
+    .etiqueta {
+      margin: 0 0 14px;
+      color: #f2dcff;
+      font-family: Arial, sans-serif;
+      font-size: .76rem;
+      font-weight: bold;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 700px;
+      margin: 0;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 500;
+      line-height: 1.03;
+      text-wrap: balance;
+    }
+
+    .intro {
+      max-width: 560px;
+      margin: 20px 0 0;
+      color: #f4eaff;
+      font-size: 1.08rem;
+      line-height: 1.7;
+    }
+
+    .portada-firma {
+      margin-top: 20px;
+      color: #ffe2fa;
+      font-size: 1.05rem;
+      font-style: italic;
+    }
+
+    .collage {
+      position: relative;
+      min-height: 390px;
+    }
+
+    .foto {
+      position: absolute;
+      overflow: hidden;
+      margin: 0;
+      padding: 8px;
+      border: 1px solid rgba(255,255,255,.7);
+      border-radius: 12px;
+      background: rgba(255,255,255,.94);
+      box-shadow: 0 18px 45px rgba(25, 12, 35, .35);
+      transition: transform .25s ease;
+    }
+
+    .foto img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 7px;
+      object-fit: cover;
+    }
+
+    .foto-uno {
+      z-index: 1;
+      top: 4%;
+      left: 2%;
+      width: 48%;
+      height: 68%;
+      transform: rotate(-7deg);
+    }
+
+    .foto-dos {
+      z-index: 2;
+      top: 0;
+      right: 3%;
+      width: 43%;
+      height: 58%;
+      transform: rotate(7deg);
+    }
+
+    .foto-tres {
+      z-index: 3;
+      right: 18%;
+      bottom: 1%;
+      width: 48%;
+      height: 55%;
+      transform: rotate(-2deg);
+    }
+
+    .foto:hover { z-index: 4; transform: rotate(0) scale(1.04); }
+
+    .foto figcaption {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      left: 8px;
+      padding: 18px 8px 7px;
+      border-radius: 0 0 7px 7px;
+      color: white;
+      background: linear-gradient(transparent, rgba(38, 17, 47, .75));
+      font-size: .76rem;
+      text-align: center;
+    }
+
+    .barra {
+      position: sticky;
+      z-index: 5;
+      top: 0;
+      padding: 13px 0;
+      border-block: 1px solid rgba(230,216,240,.85);
+      background: rgba(248,242,255,.94);
+      backdrop-filter: blur(12px);
+    }
+
+    .barra-interior { display: grid; gap: 11px; }
+
+    .busqueda {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--borde);
+      border-radius: 999px;
+      outline: none;
+      color: var(--tinta);
+      background: var(--papel);
+      font-family: Arial, sans-serif;
+    }
+
+    .busqueda:focus,
+    .respuesta:focus {
+      border-color: var(--purpura);
+      box-shadow: 0 0 0 3px rgba(128,82,165,.13);
+    }
+
+    .filtros {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 2px 0 4px;
+    }
+
+    .filtro {
+      flex: 0 0 auto;
+      padding: 9px 14px;
+      border: 1px solid var(--borde);
+      border-radius: 999px;
+      color: var(--suave);
+      background: var(--papel);
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      font-size: .83rem;
+    }
+
+    .filtro:hover, .filtro.activo {
+      border-color: var(--purpura);
+      color: white;
+      background: var(--purpura);
+    }
+
+    main { padding: 38px 0 65px; }
+
+    .bienvenida {
+      max-width: 720px;
+      margin: 0 auto 34px;
+      color: var(--suave);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .grupo { margin-bottom: 38px; }
+    .grupo[hidden], .carta[hidden] { display: none; }
+
+    .titulo-grupo {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 0 16px;
+    }
+
+    .titulo-grupo h2 {
+      margin: 0;
+      color: var(--purpura-oscuro);
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 500;
+    }
+
+    .contador {
+      color: var(--suave);
+      font-family: Arial, sans-serif;
+      font-size: .82rem;
+      white-space: nowrap;
+    }
+
+    .rejilla {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 17px;
+    }
+
+    .carta {
+      display: flex;
+      min-height: 225px;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 22px;
+      border: 1px solid var(--borde);
+      border-left: 4px solid #b08acb;
+      border-radius: 6px 17px 17px 6px;
+      background: var(--papel);
+      box-shadow: var(--sombra);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .carta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 35px rgba(79,45,104,.16);
+    }
+
+    .carta-superior {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 16px;
+      color: var(--suave);
+      font-family: Arial, sans-serif;
+      font-size: .78rem;
+    }
+
+    .estado {
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: var(--purpura-oscuro);
+      background: var(--purpura-claro);
+    }
+
+    .mensaje {
+      margin: 0 0 18px;
+      color: var(--tinta);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      white-space: pre-line;
+    }
+
+    .candado {
+      display: grid;
+      flex: 1;
+      place-content: center;
+      justify-items: center;
+      gap: 9px;
+      padding: 15px 0;
+      color: var(--purpura);
+      text-align: center;
+    }
+
+    .candado-icono { font-size: 2rem; }
+    .candado p { margin: 0; color: var(--suave); line-height: 1.5; }
+
+    .boton {
+      padding: 10px 15px;
+      border: 1px solid var(--purpura);
+      border-radius: 999px;
+      color: white;
+      background: var(--purpura);
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      font-size: .88rem;
+      transition: background .15s ease, transform .15s ease;
+    }
+
+    .boton:hover { background: var(--purpura-oscuro); transform: translateY(-1px); }
+    .boton-secundario { color: var(--purpura-oscuro); background: white; }
+    .boton-secundario:hover { color: white; }
+
+    .pie-carta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 13px;
+      border-top: 1px solid #f0e7f5;
+      color: var(--suave);
+      font-family: Arial, sans-serif;
+      font-size: .78rem;
+    }
+
+    .acciones { display: flex; gap: 7px; }
+
+    .accion {
+      display: grid;
+      width: 35px;
+      height: 35px;
+      place-items: center;
+      border: 1px solid var(--borde);
+      border-radius: 50%;
+      color: var(--purpura-oscuro);
+      background: white;
+      cursor: pointer;
+    }
+
+    .accion:hover, .accion.favorito {
+      border-color: var(--purpura);
+      color: white;
+      background: var(--purpura);
+    }
+
+    .sin-resultados {
+      display: none;
+      padding: 45px 16px;
+      color: var(--suave);
+      text-align: center;
+      font-size: 1.1rem;
+    }
+
+    .sin-resultados.visible { display: block; }
+
+    dialog {
+      width: min(440px, calc(100% - 28px));
+      padding: 0;
+      border: 1px solid var(--borde);
+      border-radius: 20px;
+      color: var(--tinta);
+      background: var(--papel);
+      box-shadow: 0 25px 80px rgba(50,25,67,.28);
+    }
+
+    dialog::backdrop {
+      background: rgba(43,24,55,.58);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-contenido { padding: 28px; }
+    .modal-corazon { color: var(--purpura); font-size: 1.6rem; }
+
+    .modal-contenido h2 {
+      margin: 8px 0;
+      color: var(--purpura-oscuro);
+      font-size: 1.65rem;
+      font-weight: 500;
+    }
+
+    .pregunta {
+      margin: 12px 0 18px;
+      color: var(--suave);
+      line-height: 1.6;
+    }
+
+    .respuesta {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      outline: none;
+      color: var(--tinta);
+      background: white;
+    }
+
+    .error {
+      min-height: 1.35em;
+      margin: 9px 0 0;
+      color: #a13d68;
+      font-family: Arial, sans-serif;
+      font-size: .85rem;
+    }
+
+    .modal-acciones {
+      display: flex;
+      justify-content: flex-end;
+      gap: 9px;
+      margin-top: 19px;
+    }
+
+    footer {
+      padding: 28px 16px 38px;
+      border-top: 1px solid var(--borde);
+      color: var(--suave);
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    footer span { color: var(--purpura); }
+
+    @media (max-width: 760px) {
+      .portada { padding: 36px 0 44px; }
+      .portada-interior { grid-template-columns: 1fr; gap: 22px; }
+      .portada-texto { padding: 12px 0 0; text-align: center; }
+      .intro { margin-inline: auto; }
+      .collage { width: min(500px, 100%); min-height: 350px; margin: 0 auto; }
+      .rejilla { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 430px) {
+      .collage { min-height: 290px; }
+      .foto-uno { width: 49%; height: 67%; }
+      .foto-dos { width: 43%; height: 55%; }
+      .foto-tres { right: 17%; width: 49%; height: 54%; }
+      .carta { min-height: 205px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="portada">
+    <div class="contenedor portada-interior">
+      <div class="portada-texto">
+        <p class="etiqueta">Un pequeño universo hecho para ti</p>
+        <h1>Un universo para ti 💜</h1>
+        <p class="intro">
+          Pequeños pensamientos, grandes sentimientos. Cada carta guarda
+          un pedacito de todo el cariño que despiertas en mí.
+        </p>
+        <p class="portada-firma">Con mucho amor, para alguien muy especial ♡</p>
+      </div>
+
+      <div class="collage" aria-label="Fotografías especiales">
+        <figure class="foto foto-uno">
+          <img src="foto1.jpeg" alt="Un recuerdo especial en una salida juntos" />
+          <figcaption>Un momento bonito ♡</figcaption>
+        </figure>
+        <figure class="foto foto-dos">
+          <img src="foto2.jpeg" alt="Un recuerdo especial para guardar" />
+          <figcaption>Un recuerdo para siempre</figcaption>
+        </figure>
+        <figure class="foto foto-tres">
+          <img src="foto3.jpeg" alt="Una fotografía juntos llena de cariño" />
+          <figcaption>Mi lugar favorito: contigo 💜</figcaption>
+        </figure>
+      </div>
+    </div>
+  </header>
+
+  <nav class="barra" aria-label="Buscar y filtrar cartas">
+    <div class="contenedor barra-interior">
+      <input id="busqueda" class="busqueda" type="search"
+        placeholder="Buscar entre las cartas..."
+        aria-label="Buscar cartas" />
+      <div id="filtros" class="filtros" aria-label="Filtrar por sección"></div>
+    </div>
+  </nav>
+
+  <main class="contenedor">
+    <p class="bienvenida">
+      Cada carta tiene una pequeña pregunta. Resuélvela para abrirla y descubrir
+      un mensaje escrito pensando en ti. Tómate tu tiempo: este universo es tuyo. 💌
+    </p>
+    <div id="coleccion"></div>
+    <p id="sinResultados" class="sin-resultados">
+      No encontramos cartas con esa búsqueda. Prueba con otra palabra. 💜
+    </p>
+  </main>
+
+  <dialog id="modal">
+    <form id="formulario">
+      <div class="modal-contenido">
+        <div class="modal-corazon">♡</div>
+        <h2>Una pregunta para ti</h2>
+        <p id="pregunta" class="pregunta"></p>
+        <input id="respuesta" class="respuesta" type="text"
+          autocomplete="off" placeholder="Escribe tu respuesta..."
+          aria-label="Tu respuesta" required />
+        <p id="error" class="error" aria-live="polite"></p>
+        <div class="modal-acciones">
+          <button id="cancelar" class="boton boton-secundario" type="button">Luego</button>
+          <button class="boton" type="submit">Abrir mi carta 💜</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <footer>
+    <span>Hecho con ♥</span> para recordarte que eres una persona muy especial.<br />
+    Este pequeño universo siempre estará aquí para ti. 💜
+  </footer>
+
+  <script>
+    const fragmentos = [
+      {
+        seccion: "Mi manera de amar ❤️",
+        texto: "No quiero aprender a quererte menos para parecer más interesante. Quiero tener la libertad de demostrarte cuánto te quiero. ❤️",
+        pregunta: "¿Qué quiero tener la libertad de hacer?",
+        respuesta: "demostrarte cuánto te quiero"
+      },
+      {
+        seccion: "Mi manera de amar ❤️",
+        texto: "Quizá soy intenso, pero prefiero un corazón que se expresa a uno que vive escondiendo lo que siente.",
+        pregunta: "¿Qué prefiero que haga un corazón?",
+        respuesta: "expresarse"
+      },
+      {
+        seccion: "Mi manera de amar ❤️",
+        texto: "No me interesa jugar a quién demuestra menos. Quiero descubrir quiénes podemos llegar a ser cuando ambos nos permitimos amar.",
+        pregunta: "¿Qué quiero que ambos nos permitamos?",
+        respuesta: "amar"
+      },
+      {
+        seccion: "Mi manera de amar ❤️",
+        texto: "Nunca entenderé por qué demostrar cariño se volvió motivo de vergüenza. Para mí, amar bonito nunca será algo de lo que deba disculparme.",
+        pregunta: "¿Qué nunca será algo de lo que deba disculparme?",
+        respuesta: "amar bonito"
+      },
+      {
+        seccion: "Mi manera de amar ❤️",
+        texto: "No quiero medir mis palabras, contar mis detalles ni esconder mis emociones. Quiero quererte con naturalidad.",
+        pregunta: "¿Cómo quiero quererte?",
+        respuesta: "con naturalidad"
+      },
+      {
+        seccion: "Mi manera de amar ❤️",
+        texto: "Mi intención nunca será impresionarte fingiendo indiferencia, sino enamorarte mostrándote quién soy realmente.",
+        pregunta: "¿Qué no quiero fingir para impresionarte?",
+        respuesta: "indiferencia"
+      },
+      {
+        seccion: "Mi manera de amar ❤️",
+        texto: "No quiero ser difícil de conquistar. Quiero ser alguien con quien sea bonito construir.",
+        pregunta: "¿Qué quiero que sea bonito hacer juntos?",
+        respuesta: "construir"
+      },
+      {
+        seccion: "Mi manera de amar ❤️",
+        texto: "Si algo tengo claro, es que jamás quisiera que confundieras mi intensidad con falta de sinceridad.",
+        pregunta: "¿Con qué no quiero que confundas mi intensidad?",
+        respuesta: "falta de sinceridad"
+      },
+
+      {
+        seccion: "El amor en estos tiempos 💜",
+        texto: "Vivimos en una época donde muchos creen que demostrar menos es tener más valor. Yo prefiero ser de los que todavía se atreven a demostrarlo todo.",
+        pregunta: "¿Qué prefiero atreverme a demostrar?",
+        respuesta: "todo"
+      },
+      {
+        seccion: "El amor en estos tiempos 💜",
+        texto: "No quiero convertir el amor en una competencia de indiferencia.",
+        pregunta: "¿En qué no quiero convertir el amor?",
+        respuesta: "una competencia de indiferencia"
+      },
+      {
+        seccion: "El amor en estos tiempos 💜",
+        texto: "Qué curioso que hoy parezca más atractivo quien menos interés demuestra, cuando para mí no existe nada más bonito que sentirse querido.",
+        pregunta: "¿Qué es lo más bonito para mí?",
+        respuesta: "sentirse querido"
+      },
+      {
+        seccion: "El amor en estos tiempos 💜",
+        texto: "No quiero aprender las reglas de un juego en el que ambos terminamos fingiendo que no sentimos nada.",
+        pregunta: "¿Qué no quiero aprender?",
+        respuesta: "las reglas del juego"
+      },
+      {
+        seccion: "El amor en estos tiempos 💜",
+        texto: "Prefiero un amor que se note antes que uno que tenga que adivinarse.",
+        pregunta: "¿Qué tipo de amor prefiero?",
+        respuesta: "un amor que se note"
+      },
+      {
+        seccion: "El amor en estos tiempos 💜",
+        texto: "No me interesa tener el poder de hacerte esperar. Me interesa tener la oportunidad de hacerte feliz.",
+        pregunta: "¿Qué oportunidad me interesa tener?",
+        respuesta: "hacerte feliz"
+      },
+      {
+        seccion: "El amor en estos tiempos 💜",
+        texto: "Que nunca nos dé vergüenza ser esa pareja que todavía se emociona por un mensaje bonito.",
+        pregunta: "¿Qué clase de pareja quiero que seamos?",
+        respuesta: "esa pareja que se emociona por un mensaje bonito"
+      },
+      {
+        seccion: "El amor en estos tiempos 💜",
+        texto: "En un mundo donde todos parecen querer protegerse de sentir, yo todavía quiero atreverme a sentirlo todo.",
+        pregunta: "¿Qué quiero atreverme a sentir?",
+        respuesta: "todo"
+      },
+
+      {
+        seccion: "Quiero vivir el amor contigo 🌎",
+        texto: "No quiero morir por ti, quiero vivir contigo. Quiero que mi amor sea una decisión de vida, no una promesa de muerte.",
+        pregunta: "¿Qué quiero hacer contigo?",
+        respuesta: "vivir contigo"
+      },
+      {
+        seccion: "Quiero vivir el amor contigo 🌎",
+        texto: "Quiero llenar contigo álbumes de recuerdos, fotografías espontáneas y momentos que algún día nos hagan sonreír.",
+        pregunta: "¿Qué quiero llenar contigo?",
+        respuesta: "álbumes de recuerdos"
+      },
+      {
+        seccion: "Quiero vivir el amor contigo 🌎",
+        texto: "No sé cuántas experiencias nos esperan, pero me emociona imaginar que muchas de ellas tendrán tu compañía.",
+        pregunta: "¿Qué me emociona imaginar que tendré?",
+        respuesta: "tu compañía"
+      },
+      {
+        seccion: "Quiero vivir el amor contigo 🌎",
+        texto: "Quiero conocer lugares, probar cosas nuevas, reír hasta que nos duela el estómago y coleccionar historias contigo.",
+        pregunta: "¿Qué quiero coleccionar contigo?",
+        respuesta: "historias"
+      },
+      {
+        seccion: "Quiero vivir el amor contigo 🌎",
+        texto: "No quiero prometerte una vida perfecta. Quiero construir una vida en la que ambos queramos quedarnos.",
+        pregunta: "¿Qué quiero construir contigo?",
+        respuesta: "una vida en la que ambos queramos quedarnos"
+      },
+      {
+        seccion: "Quiero vivir el amor contigo 🌎",
+        texto: "Me siento listo para descubrir todas esas pequeñas aventuras que todavía no sabemos que viviremos.",
+        pregunta: "¿Qué clase de cosas me siento listo para descubrir?",
+        respuesta: "aventuras"
+      },
+      {
+        seccion: "Quiero vivir el amor contigo 🌎",
+        texto: "Quiero que seamos compañeros de aventuras, confidentes, cómplices de sueños y refugio en los días difíciles.",
+        pregunta: "¿Qué quiero ser para ti en los días difíciles?",
+        respuesta: "refugio"
+      },
+      {
+        seccion: "Quiero vivir el amor contigo 🌎",
+        texto: "No quiero solamente formar parte de tus días bonitos. También quiero aprender a acompañarte en los difíciles.",
+        pregunta: "¿En qué días también quiero acompañarte?",
+        respuesta: "los difíciles"
+      },
+
+      {
+        seccion: "El tiempo y lo que sentimos ⏳",
+        texto: "El tiempo puede decirnos cuánto llevamos conociéndonos, pero no siempre puede explicar cuánto hemos llegado a sentir.",
+        pregunta: "¿Qué no siempre puede explicar el tiempo?",
+        respuesta: "lo que sentimos"
+      },
+      {
+        seccion: "El tiempo y lo que sentimos ⏳",
+        texto: "Hay encuentros que no necesitan años para convertirse en recuerdos especiales.",
+        pregunta: "¿Qué no necesitan algunos encuentros?",
+        respuesta: "años"
+      },
+      {
+        seccion: "El tiempo y lo que sentimos ⏳",
+        texto: "Apenas estamos comenzando, y aun así hay tantas cosas de ti que ya me emociona seguir descubriendo.",
+        pregunta: "¿Qué me emociona seguir haciendo contigo?",
+        respuesta: "descubriéndote"
+      },
+      {
+        seccion: "El tiempo y lo que sentimos ⏳",
+        texto: "No quiero apresurar nuestra historia, pero tampoco quiero fingir que no me emociona escribirla contigo.",
+        pregunta: "¿Qué me emociona escribir contigo?",
+        respuesta: "nuestra historia"
+      },
+      {
+        seccion: "El tiempo y lo que sentimos ⏳",
+        texto: "En tan poco tiempo te has convertido en uno de esos sueños que no quisiera despertar.",
+        pregunta: "¿En qué te has convertido para mí?",
+        respuesta: "un sueño"
+      },
+      {
+        seccion: "El tiempo y lo que sentimos ⏳",
+        texto: "No sé qué nos tiene preparado el destino, pero me gusta la idea de descubrirlo sin soltar tu mano.",
+        pregunta: "¿Qué no quiero soltar mientras descubrimos el destino?",
+        respuesta: "tu mano"
+      },
+
+      {
+        seccion: "Cosas que me enamoran de ti 🌷",
+        texto: "Hay algo en tu manera de ser que me resulta particularmente bonito. No sé si es tu forma de expresarte, tus ocurrencias o esa personalidad que vas dejando descubrir poco a poco. Pero hay algo seguro: me gusta conocerte.",
+        pregunta: "¿Qué me gusta hacer poco a poco?",
+        respuesta: "conocerte"
+      },
+      {
+        seccion: "Cosas que me enamoran de ti 🌷",
+        texto: "Quizá no te das cuenta, pero tienes una manera muy particular de hacer que los momentos más sencillos se conviertan en recuerdos especiales.",
+        pregunta: "¿Qué hacen los momentos sencillos contigo?",
+        respuesta: "convertirse en recuerdos especiales"
+      },
+      {
+        seccion: "Cosas que me enamoran de ti 🌷",
+        texto: "Me gusta cuando eres tú, sin intentar impresionar a nadie, sin preocuparte por cómo te ven los demás. Esa versión tuya tiene algo que me encanta.",
+        pregunta: "¿Qué versión de ti me encanta?",
+        respuesta: "cuando eres tú"
+      },
+      {
+        seccion: "Cosas que me enamoran de ti 🌷",
+        texto: "Si supieras cuántas pequeñas cosas tuyas se quedan dando vueltas en mi cabeza, entenderías por qué me gusta tanto prestarte atención.",
+        pregunta: "¿Qué me gusta tanto hacer contigo?",
+        respuesta: "prestarte atención"
+      },
+      {
+        seccion: "Cosas que me enamoran de ti 🌷",
+        texto: "No sé si alguna vez te has detenido a observarte desde mis ojos, pero probablemente descubrirías una cantidad de detalles hermosos que tú misma pasas por alto.",
+        pregunta: "¿Qué podrías descubrir si te miraras desde mis ojos?",
+        respuesta: "detalles hermosos"
+      },
+      {
+        seccion: "Cosas que me enamoran de ti 🌷",
+        texto: "Me encanta que todavía existan tantas cosas de ti que no conozco. Es bonito saber que aún tengo mucho por descubrir.",
+        pregunta: "¿Qué aún me queda por hacer?",
+        respuesta: "descubrirte"
+      },
+      {
+        seccion: "Cosas que me enamoran de ti 🌷",
+        texto: "No solamente me gusta tu sonrisa, también me gusta aquello que consigue provocarla.",
+        pregunta: "¿Qué me gusta además de tu sonrisa?",
+        respuesta: "aquello que la provoca"
+      },
+      {
+        seccion: "Cosas que me enamoran de ti 🌷",
+        texto: "Hay personas que llaman la atención por su apariencia, pero existen otras que consiguen quedarse en tus pensamientos por su manera de ser. Tú tienes un poquito de ambas.",
+        pregunta: "¿Por qué te quedas en mis pensamientos?",
+        respuesta: "por tu manera de ser"
+      },
+      {
+        seccion: "Cosas que me enamoran de ti 🌷",
+        texto: "Me gustaría que nunca dejaras de ser esa persona que tiene sus propias ocurrencias, sus sueños, sus pequeñas locuras y su manera especial de mirar la vida.",
+        pregunta: "¿Qué me gustaría que nunca dejaras de ser?",
+        respuesta: "esa persona con sus propias ocurrencias y sueños"
+      },
+      {
+        seccion: "Cosas que me enamoran de ti 🌷",
+        texto: "Si alguna vez dudas de lo especial que eres, recuerda que hay alguien que encuentra belleza incluso en esos pequeños detalles tuyos que consideras insignificantes.",
+        pregunta: "¿Qué encuentro aún en tus detalles pequeños?",
+        respuesta: "belleza"
+      },
+
+      {
+        seccion: "Lo que despiertas en mí 🦋",
+        texto: "A veces sonrío cuando recuerdo alguna conversación contigo. Y lo más curioso es que probablemente tú ni siquiera imaginas cuántas veces consigues alegrarme el día sin proponértelo.",
+        pregunta: "¿Qué haces con mi día sin proponértelo?",
+        respuesta: "alegrarlo"
+      },
+      {
+        seccion: "Lo que despiertas en mí 🦋",
+        texto: "No sé exactamente en qué momento comenzaste a ocupar tantos pensamientos míos, pero debo admitir que me gusta encontrarte incluso en ellos.",
+        pregunta: "¿Dónde me gusta encontrarte?",
+        respuesta: "en mis pensamientos"
+      },
+      {
+        seccion: "Lo que despiertas en mí 🦋",
+        texto: "Hay mensajes que llegan y se leen, y hay mensajes que llegan y consiguen cambiarte el ánimo. Los tuyos suelen pertenecer al segundo grupo.",
+        pregunta: "¿Qué cambian tus mensajes?",
+        respuesta: "mi ánimo"
+      },
+      {
+        seccion: "Lo que despiertas en mí 🦋",
+        texto: "Me gusta esa sensación de tener algo bonito que esperar durante el día, y muchas veces ese algo termina siendo hablar contigo.",
+        pregunta: "¿Qué termina siendo ese algo bonito que espero?",
+        respuesta: "hablar contigo"
+      },
+      {
+        seccion: "Lo que despiertas en mí 🦋",
+        texto: "No necesito que suceda algo extraordinario para disfrutar de tu compañía. A veces una conversación sencilla contigo es suficiente.",
+        pregunta: "¿Qué basta para disfrutar de tu compañía?",
+        respuesta: "una conversación sencilla"
+      },
+      {
+        seccion: "Lo que despiertas en mí 🦋",
+        texto: "Me haces descubrir emociones que me gusta experimentar y que quisiera seguir conociendo a tu lado.",
+        pregunta: "¿Qué me gusta seguir conociendo a tu lado?",
+        respuesta: "emociones"
+      },
+      {
+        seccion: "Lo que despiertas en mí 🦋",
+        texto: "Qué bonito es encontrar a alguien con quien puedes pasar de una conversación profunda a una tontería en cuestión de segundos.",
+        pregunta: "¿Con quién me gusta pasar de una conversación profunda a una tontería?",
+        respuesta: "contigo"
+      },
+      {
+        seccion: "Lo que despiertas en mí 🦋",
+        texto: "No sé cómo explicarlo, pero hay algo tranquilizador en saber que existes y que, entre tantas personas en el mundo, nuestros caminos llegaron a encontrarse.",
+        pregunta: "¿Qué llega a encontrarse entre tanta gente?",
+        respuesta: "nuestros caminos"
+      },
+      {
+        seccion: "Lo que despiertas en mí 🦋",
+        texto: "A veces no necesito decirte que te extraño. Simplemente me descubro buscando alguna excusa para hablar contigo.",
+        pregunta: "¿Qué busco cuando quiero hablar contigo?",
+        respuesta: "una excusa"
+      },
+      {
+        seccion: "Lo que despiertas en mí 🦋",
+        texto: "Si mis pensamientos tuvieran una pequeña sección de favoritos, estoy seguro de que encontrarías tu nombre más de una vez.",
+        pregunta: "¿Dónde encontraría tu nombre?",
+        respuesta: "en mis pensamientos favoritos"
+      },
+
+      {
+        seccion: "Cartas que todavía no te he escrito 💌",
+        texto: "Quisiera que algún día pudieras leer todas las palabras que he pensado para ti y comprender que detrás de cada una existe un sentimiento sincero.",
+        pregunta: "¿Qué existe detrás de cada palabra que te escribo?",
+        respuesta: "un sentimiento sincero"
+      },
+      {
+        seccion: "Cartas que todavía no te he escrito 💌",
+        texto: "No quiero prometerte que nunca tendremos días difíciles. Quiero prometerte que, cuando lleguen, mi intención seguirá siendo comprenderte y construir contigo.",
+        pregunta: "¿Qué seguirá siendo mi intención cuando lleguen los días difíciles?",
+        respuesta: "comprenderte y construir contigo"
+      },
+      {
+        seccion: "Cartas que todavía no te he escrito 💌",
+        texto: "Me gusta la idea de quererte sin tener que convertirme en alguien diferente. Quiero que conozcas mis virtudes, mis defectos, mis sueños y hasta esas pequeñas rarezas que forman parte de mí.",
+        pregunta: "¿Qué quiero que conozcas de verdad?",
+        respuesta: "mis virtudes y defectos"
+      },
+      {
+        seccion: "Cartas que todavía no te he escrito 💌",
+        texto: "No quiero que tengas que preguntarte si eres importante para mí. Me gustaría que mis acciones consiguieran recordártelo incluso cuando no encuentre las palabras adecuadas.",
+        pregunta: "¿Qué me gustaría que te recordaran aunque no encuentre palabras?",
+        respuesta: "mis acciones"
+      },
+      {
+        seccion: "Cartas que todavía no te he escrito 💌",
+        texto: "Si algún día te escribo una carta demasiado larga, probablemente será porque hay sentimientos que simplemente no saben resumirse.",
+        pregunta: "¿Qué no sabe resumirse?",
+        respuesta: "los sentimientos"
+      },
+      {
+        seccion: "Cartas que todavía no te he escrito 💌",
+        texto: "No pretendo ser el protagonista de todos tus sueños. Me gustaría ser alguien que te acompañe a cumplirlos.",
+        pregunta: "¿Qué me gustaría ser en tus sueños?",
+        respuesta: "alguien que te acompañe"
+      },
+      {
+        seccion: "Cartas que todavía no te he escrito 💌",
+        texto: "Quiero que sepas que no tienes que ganarte mi cariño siendo perfecta. Me interesa conocerte de verdad, incluso en esos días en los que ni tú misma sabes cómo te sientes.",
+        pregunta: "¿Cómo me interesa conocerte?",
+        respuesta: "de verdad"
+      },
+      {
+        seccion: "Cartas que todavía no te he escrito 💌",
+        texto: "No quiero que nuestro cariño sea una obligación, sino una elección que ambos podamos hacer con libertad y alegría.",
+        pregunta: "¿Qué quiero que sea nuestro cariño?",
+        respuesta: "una elección"
+      },
+      {
+        seccion: "Cartas que todavía no te he escrito 💌",
+        texto: "Si pudiera guardar algo de cada día contigo, serían esos pequeños instantes en los que ninguno de los dos necesita hacer demasiado para sentirse feliz.",
+        pregunta: "¿Qué guardaría de cada día contigo?",
+        respuesta: "pequeños instantes"
+      },
+      {
+        seccion: "Cartas que todavía no te he escrito 💌",
+        texto: "Hay palabras que todavía no te he dicho, experiencias que todavía no hemos vivido y abrazos que todavía no hemos compartido. Me emociona pensar que aún tenemos tanto por descubrir.",
+        pregunta: "¿Qué me emociona pensar que aún tenemos?",
+        respuesta: "tanto por descubrir"
+      },
+
+      {
+        seccion: "Todas las cosas que quiero vivir contigo 🌎",
+        texto: "Quiero tener citas espontáneas contigo, conocer lugares nuevos, compartir comidas, tomar fotografías tontas y algún día recordar todas esas pequeñas aventuras con una sonrisa.",
+        pregunta: "¿Qué quiero recordar algún día con una sonrisa?",
+        respuesta: "nuestras pequeñas aventuras"
+      },
+      {
+        seccion: "Todas las cosas que quiero vivir contigo 🌎",
+        texto: "Quiero conocer tus lugares favoritos y enseñarte los míos. Que poco a poco vayamos creando un mapa de recuerdos que solamente nosotros podamos entender.",
+        pregunta: "¿Qué quiero crear contigo poco a poco?",
+        respuesta: "un mapa de recuerdos"
+      },
+      {
+        seccion: "Todas las cosas que quiero vivir contigo 🌎",
+        texto: "Me gustaría tener un día en el que no exista ningún plan, ninguna prisa y ninguna preocupación. Solamente nosotros, disfrutando de estar juntos.",
+        pregunta: "¿Qué me gustaría que no existiera ese día?",
+        respuesta: "ninguna prisa"
+      },
+      {
+        seccion: "Todas las cosas que quiero vivir contigo 🌎",
+        texto: "Quiero probar comidas contigo, incluso aquellas que probablemente terminemos criticando. Lo importante será tener una nueva anécdota que recordar.",
+        pregunta: "¿Qué quiero tener después de probar comidas contigo?",
+        respuesta: "una nueva anécdota"
+      },
+      {
+        seccion: "Todas las cosas que quiero vivir contigo 🌎",
+        texto: "Me encantaría viajar contigo, perdernos un poquito en algún lugar desconocido y descubrir que hasta equivocarnos de camino puede convertirse en una aventura.",
+        pregunta: "¿Qué puede convertirse en aventura incluso si nos equivocamos?",
+        respuesta: "el camino"
+      },
+      {
+        seccion: "Todas las cosas que quiero vivir contigo 🌎",
+        texto: "Quiero tener fotografías contigo de esos momentos que parecen insignificantes mientras suceden, pero que después se convierten en nuestros favoritos.",
+        pregunta: "¿En qué se convierten esos momentos después?",
+        respuesta: "en nuestros favoritos"
+      },
+      {
+        seccion: "Todas las cosas que quiero vivir contigo 🌎",
+        texto: "Me gustaría compartir contigo tardes de lluvia, películas, conversaciones interminables y esos silencios que no necesitan ser llenados.",
+        pregunta: "¿Qué tipo de silencios me gustaría compartir contigo?",
+        respuesta: "silencios que no necesitan ser llenados"
+      },
+      {
+        seccion: "Todas las cosas que quiero vivir contigo 🌎",
+        texto: "Quiero conocer las cosas que te emocionan, acompañarte en tus proyectos y celebrar contigo incluso esos pequeños logros que quizá los demás no noten.",
+        pregunta: "¿Qué quiero celebrar contigo?",
+        respuesta: "tus logros"
+      },
+      {
+        seccion: "Todas las cosas que quiero vivir contigo 🌎",
+        texto: "Algún día quiero que podamos mirar hacia atrás y decir: ¡Cuántas cosas hemos vivido desde aquella primera conversación!",
+        pregunta: "¿Qué quiero que podamos decir mirando hacia atrás?",
+        respuesta: "cuántas cosas hemos vivido"
+      },
+      {
+        seccion: "Todas las cosas que quiero vivir contigo 🌎",
+        texto: "No sé cuántos lugares visitaremos, pero me encanta imaginar que algunos de mis recuerdos favoritos todavía no tienen fecha ni ubicación porque aún están esperándonos.",
+        pregunta: "¿Qué aún no tienen algunos de mis recuerdos favoritos?",
+        respuesta: "fecha ni ubicación"
+      },
+
+      {
+        seccion: "Si algún día tienes un mal día 🌙",
+        texto: "No todos los días tendrás que sonreír, ser fuerte o tener todo bajo control. También mereces días tranquilos, abrazos largos y alguien que te recuerde que está bien descansar.",
+        pregunta: "¿Qué también mereces cuando estés cansada?",
+        respuesta: "descansar"
+      },
+      {
+        seccion: "Si algún día tienes un mal día 🌙",
+        texto: "Si algún día sientes que no estás haciendo suficiente, quiero recordarte que tu valor no depende de cuánto consigas hacer. También mereces sentirte orgullosa de simplemente seguir adelante.",
+        pregunta: "¿Qué no depende de cuánto consigas hacer?",
+        respuesta: "tu valor"
+      },
+      {
+        seccion: "Si algún día tienes un mal día 🌙",
+        texto: "No tienes que encontrar las palabras correctas para contarme cómo te sientes. A veces basta con decir que no estás bien.",
+        pregunta: "¿Qué basta con decir cuando no te sientes bien?",
+        respuesta: "no estoy bien"
+      },
+      {
+        seccion: "Si algún día tienes un mal día 🌙",
+        texto: "Si el mundo se vuelve demasiado ruidoso, espero que encuentres un momento para respirar, descansar y recordar que no tienes que resolverlo todo hoy.",
+        pregunta: "¿Qué no tienes que resolver hoy?",
+        respuesta: "todo"
+      },
+      {
+        seccion: "Si algún día tienes un mal día 🌙",
+        texto: "Quiero que nunca sientas que debes ocultar tus días difíciles para merecer cariño.",
+        pregunta: "¿Qué no debes ocultar para merecer cariño?",
+        respuesta: "tus días difíciles"
+      },
+      {
+        seccion: "Si algún día tienes un mal día 🌙",
+        texto: "Ojalá puedas mirarte con la misma ternura con la que miras a las personas que quieres. También mereces toda esa paciencia.",
+        pregunta: "¿Con qué ternura mereces mirarte a ti misma?",
+        respuesta: "con la misma ternura"
+      },
+      {
+        seccion: "Si algún día tienes un mal día 🌙",
+        texto: "Si alguna vez dudas de ti misma, recuerda todas esas veces que has superado situaciones que en algún momento parecían demasiado grandes.",
+        pregunta: "¿Qué has superado antes?",
+        respuesta: "situaciones difíciles"
+      },
+      {
+        seccion: "Si algún día tienes un mal día 🌙",
+        texto: "No quiero quitarte todas las preocupaciones, porque sé que también forman parte de la vida. Pero sí quisiera ser alguien con quien puedas compartirlas.",
+        pregunta: "¿Qué quisiera compartir contigo?",
+        respuesta: "tus preocupaciones"
+      },
+      {
+        seccion: "Si algún día tienes un mal día 🌙",
+        texto: "Descansa cuando lo necesites, llora si hace falta, vuelve a intentarlo cuando tengas fuerzas. No tienes que ser invencible para ser maravillosa.",
+        pregunta: "¿Qué no tienes que ser para ser maravillosa?",
+        respuesta: "invencible"
+      },
+      {
+        seccion: "Si algún día tienes un mal día 🌙",
+        texto: "Incluso en tus días más grises, sigues siendo una persona digna de amor, respeto y cosas bonitas.",
+        pregunta: "¿De qué sigues siendo digna incluso en tus días grises?",
+        respuesta: "amor, respeto y cosas bonitas"
+      },
+
+      {
+        seccion: "Pequeñas razones para sonreír 🌸",
+        texto: "Reporte del día: alguien está pensando en ti y probablemente está sonriendo mientras lo hace. 💜",
+        pregunta: "¿Qué está haciendo alguien mientras piensa en ti?",
+        respuesta: "sonriendo"
+      },
+      {
+        seccion: "Pequeñas razones para sonreír 🌸",
+        texto: "Si recibieras una moneda por cada vez que apareces en mis pensamientos, probablemente ya tendrías para invitarme a comer.",
+        pregunta: "¿Para qué probablemente ya tendrías dinero?",
+        respuesta: "invitarme a comer"
+      },
+      {
+        seccion: "Pequeñas razones para sonreír 🌸",
+        texto: "Tengo una teoría: las conversaciones contigo tienen algún tipo de efecto secundario que consiste en querer seguir hablando incluso cuando ya no hay nada que contar.",
+        pregunta: "¿Qué surge al hablar contigo aunque no haya nada que contar?",
+        respuesta: "ganas de seguir hablando"
+      },
+      {
+        seccion: "Pequeñas razones para sonreír 🌸",
+        texto: "No sé si eres una distracción o mi parte favorita del día. Quizá un poquito de ambas.",
+        pregunta: "¿Qué quizá eres para mí?",
+        respuesta: "mi parte favorita del día"
+      },
+      {
+        seccion: "Pequeñas razones para sonreír 🌸",
+        texto: "Quisiera solicitar formalmente más momentos contigo, más risas y más oportunidades para hacerte sonreír. La solicitud queda pendiente de aprobación. 📝",
+        pregunta: "¿Qué queda pendiente de aprobación?",
+        respuesta: "mi solicitud"
+      },
+      {
+        seccion: "Pequeñas razones para sonreír 🌸",
+        texto: "Advertencia: pensar demasiado en ti puede provocar sonrisas espontáneas y ganas repentinas de escribirte.",
+        pregunta: "¿Qué puede provocar pensar demasiado en ti?",
+        respuesta: "sonrisas espontáneas"
+      },
+      {
+        seccion: "Pequeñas razones para sonreír 🌸",
+        texto: "Si fueras una canción, probablemente sería de esas que uno repite tantas veces que termina aprendiendo hasta los silencios.",
+        pregunta: "¿Qué terminaría aprendiendo de esa canción?",
+        respuesta: "los silencios"
+      },
+      {
+        seccion: "Pequeñas razones para sonreír 🌸",
+        texto: "No sé qué tiene tu nombre, pero definitivamente se ve bonito cuando aparece en mi pantalla.",
+        pregunta: "¿Dónde se ve bonito tu nombre?",
+        respuesta: "en mi pantalla"
+      },
+      {
+        seccion: "Pequeñas razones para sonreír 🌸",
+        texto: "Creo que tengo un pequeño problema: cada vez que conozco algo nuevo de ti, encuentro otra razón para querer seguir conociéndote.",
+        pregunta: "¿Qué encuentro cada vez que conozco algo nuevo de ti?",
+        respuesta: "otra razón para quererte más"
+      },
+      {
+        seccion: "Pequeñas razones para sonreír 🌸",
+        texto: "No necesitas hacer nada extraordinario para ser mi pensamiento bonito del día. A veces basta con ser tú.",
+        pregunta: "¿Qué basta para ser mi pensamiento bonito del día?",
+        respuesta: "ser tú"
+      },
+
+      {
+        seccion: "Un lugar donde siempre puedes volver 💜",
+        texto: "Si algún día olvidas cuánto significas para mí, puedes volver a este pequeño rincón y recordar que hubo alguien que quiso dedicarte un universo entero de palabras.",
+        pregunta: "¿Qué quiso dedicarte alguien?",
+        respuesta: "un universo entero de palabras"
+      },
+      {
+        seccion: "Un lugar donde siempre puedes volver 💜",
+        texto: "Me gustaría que este espacio fuera un recordatorio de que existen personas que todavía creen en demostrar cariño sin miedo, en cuidar los detalles y en construir algo bonito.",
+        pregunta: "¿En qué creen las personas que todavía saben demostrar cariño?",
+        respuesta: "sin miedo"
+      },
+      {
+        seccion: "Un lugar donde siempre puedes volver 💜",
+        texto: "No quiero que estas palabras sean solamente algo que leas una vez. Quiero que, si algún día necesitas recordar lo especial que eres, encuentres aquí un pequeño motivo para sonreír.",
+        pregunta: "¿Qué quiero que encuentres aquí si te sientes baja?",
+        respuesta: "un motivo para sonreír"
+      },
+      {
+        seccion: "Un lugar donde siempre puedes volver 💜",
+        texto: "No tienes que ser siempre la misma persona. Me gustaría conocerte en cada una de tus etapas, celebrar tus cambios y acompañarte mientras descubres nuevas versiones de ti.",
+        pregunta: "¿Qué me gustaría conocer de ti?",
+        respuesta: "todas tus etapas"
+      },
+      {
+        seccion: "Un lugar donde siempre puedes volver 💜",
+        texto: "Quiero que tengas la libertad de perseguir tus sueños, descubrir el mundo y convertirte en todo aquello que deseas. El amor bonito también sabe acompañar sin limitar.",
+        pregunta: "¿Qué sabe hacer el amor bonito?",
+        respuesta: "acompañar sin limitar"
+      },
+      {
+        seccion: "Un lugar donde siempre puedes volver 💜",
+        texto: "No quiero ser alguien que te quite espacio para crecer. Quiero que podamos crecer individualmente y también construir experiencias juntos.",
+        pregunta: "¿Qué quiero que podamos hacer juntos?",
+        respuesta: "crecer y construir experiencias"
+      },
+      {
+        seccion: "Un lugar donde siempre puedes volver 💜",
+        texto: "Quizá no pueda controlar lo que nos espera mañana, pero sí puedo elegir la sinceridad con la que quiero vivir lo que compartimos hoy.",
+        pregunta: "¿Con qué quiero vivir lo que compartimos hoy?",
+        respuesta: "con sinceridad"
+      },
+      {
+        seccion: "Un lugar donde siempre puedes volver 💜",
+        texto: "Si nuestra historia fuera un libro, no quisiera saltarme los capítulos difíciles ni apresurar los bonitos. Quisiera leerlos contigo, aprender de ellos y seguir escribiendo.",
+        pregunta: "¿Qué quisiera hacer contigo con nuestra historia?",
+        respuesta: "leerla y seguir escribiéndola"
+      },
+      {
+        seccion: "Un lugar donde siempre puedes volver 💜",
+        texto: "Me encanta pensar que todavía hay muchas versiones de nosotros que no conocemos y que la vida podría sorprendernos con experiencias maravillosas.",
+        pregunta: "¿Qué me encanta pensar que aún hay de nosotros?",
+        respuesta: "muchas versiones"
+      },
+      {
+        seccion: "Un lugar donde siempre puedes volver 💜",
+        texto: "Y si algún día llegas al final de todos estos mensajes, quiero que recuerdes algo: no escribí estas palabras para pedirte que sintieras lo mismo que yo, sino para compartirte un poquito de todo lo bonito que despiertas en mí.",
+        pregunta: "¿Para qué escribí estas palabras?",
+        respuesta: "para compartirte lo bonito que despiertas en mí"
+      },
+
+      {
+        seccion: "Mensajes secretos y especiales 💌",
+        texto: "Si llegaste hasta aquí, tengo que confesarte algo: mi intención era escribirte unos cuantos mensajes, pero parece que encontré demasiadas razones para seguir hablando de ti.",
+        pregunta: "¿Qué encontré al hablar de ti?",
+        respuesta: "muchas razones"
+      },
+      {
+        seccion: "Mensajes secretos y especiales 💌",
+        texto: "¿Sabes qué me gustaría? Que algún día podamos volver a esta página juntos, leer estos mensajes y recordar cómo comenzó todo.",
+        pregunta: "¿Qué me gustaría recordar contigo más adelante?",
+        respuesta: "cómo comenzó todo"
+      },
+      {
+        seccion: "Mensajes secretos y especiales 💌",
+        texto: "No sé qué pensaste al encontrar este pequeño universo, pero espero que hayas sentido aunque sea una parte del cariño con el que fue creado.",
+        pregunta: "¿Con qué fue creado este pequeño universo?",
+        respuesta: "con cariño"
+      },
+      {
+        seccion: "Mensajes secretos y especiales 💌",
+        texto: "Hay regalos que se compran, otros que se envuelven y algunos que se construyen con tiempo, dedicación y sentimientos. Este pequeño lugar pertenece al último grupo.",
+        pregunta: "¿Con qué se construye este lugar?",
+        respuesta: "tiempo, dedicación y sentimientos"
+      },
+      {
+        seccion: "Mensajes secretos y especiales 💌",
+        texto: "Si pudiera esconder un abrazo entre estas palabras, sería uno de esos que duran un poquito más porque ninguno de los dos tiene prisa por soltarse.",
+        pregunta: "¿Qué no tendría ninguno de los dos al abrazarnos?",
+        respuesta: "prisa por soltarse"
+      },
+      {
+        seccion: "Mensajes secretos y especiales 💌",
+        texto: "No importa cuántas veces visites este lugar, siempre habrá algo que quiero que recuerdes: mereces un amor que no te haga sentir que debes esconder tu forma de ser.",
+        pregunta: "¿Qué no debería hacerte sentir el amor verdadero?",
+        respuesta: "que debes esconder tu forma de ser"
+      },
+      {
+        seccion: "Mensajes secretos y especiales 💌",
+        texto: "Quizá este universo tenga muchos mensajes, pero hay algo que no cabe en ninguno de ellos: todo lo que todavía me gustaría vivir y descubrir contigo.",
+        pregunta: "¿Qué todavía me gustaría vivir y descubrir contigo?",
+        respuesta: "todo"
+      },
+      {
+        seccion: "Mensajes secretos y especiales 💌",
+        texto: "Gracias por existir, por permitirme conocerte y por convertir algunos días ordinarios en momentos que espero volver a vivir.",
+        pregunta: "¿Qué espero volver a vivir contigo?",
+        respuesta: "momentos ordinarios"
+      },
+      {
+        seccion: "Mensajes secretos y especiales 💌",
+        texto: "No sé qué nombre tendrá nuestra historia dentro de algunos años, pero me gusta que hoy podamos escribir sus primeras líneas.",
+        pregunta: "¿Qué me gusta poder escribir hoy?",
+        respuesta: "las primeras líneas de nuestra historia"
+      },
+      {
+        seccion: "Mensajes secretos y especiales 💌",
+        texto: "Y finalmente, si tuviera que resumir todos estos mensajes en uno solo, sería este: no quiero que seas solamente alguien a quien le digo cosas bonitas; quiero que seas alguien con quien pueda construir momentos que hagan que esas palabras tengan sentido. ❤️",
+        pregunta: "¿Qué quiero que seas para mí?",
+        respuesta: "alguien con quien construir momentos"
+      },
+
+      {
+        seccion: "Una última cosita 💜",
+        texto: "Si has llegado hasta aquí, quiero regalarte una última reflexión:\n\nA veces pensamos que para hacer sentir especial a alguien necesitamos grandes regalos, viajes extraordinarios o momentos sacados de una película. Pero yo creo que también existe magia en las cosas pequeñas: en preguntar cómo estuvo tu día, recordar algo que te gusta, escuchar una historia que ya has contado y seguir disfrutando de ella, o simplemente encontrar motivos para hacerte sonreír.\n\nEste pequeño universo nació de una idea sencilla: guardar en algún lugar todas esas palabras que a veces quisiera decirte.\n\nNo sé cuántas páginas tendrá nuestra historia, pero me gustaría que nunca perdiéramos las ganas de escribirla.\n\nCon mucho cariño, para alguien que se ha convertido en una parte muy bonita de mis pensamientos. 💜",
+        pregunta: "¿De qué nació este pequeño universo?",
+        respuesta: "de guardar palabras para ti"
+      }
+    ];
+
+    const coleccion = document.querySelector("#coleccion");
+    const filtros = document.querySelector("#filtros");
+    const busqueda = document.querySelector("#busqueda");
+    const modal = document.querySelector("#modal");
+    const formulario = document.querySelector("#formulario");
+    const inputRespuesta = document.querySelector("#respuesta");
+    const textoPregunta = document.querySelector("#pregunta");
+    const mensajeError = document.querySelector("#error");
+    const sinResultados = document.querySelector("#sinResultados");
+
+    const secciones = [...new Set(fragmentos.map(item => item.seccion))];
+    let seccionActiva = "Todos";
+    let cartaPendiente = null;
+
+    function normalizar(texto) {
+      return (texto || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim()
+        .replace(/\s+/g, " ")
+        .toLocaleLowerCase("es");
+    }
+
+    function leerLista(clave) {
+      try {
+        return JSON.parse(localStorage.getItem(clave) || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    let desbloqueadas = leerLista("universo-amor-desbloqueadas-v4");
+    let favoritos = leerLista("universo-amor-favoritas-v4");
+
+    function crearFiltros() {
+      const opciones = ["Todos", ...secciones];
+
+      filtros.innerHTML = opciones.map((nombre) => `
+        <button class="filtro ${nombre === seccionActiva ? "activo" : ""}"
+          type="button" data-seccion="${nombre}"
+          aria-pressed="${nombre === seccionActiva}">
+          ${nombre}
+        </button>
+      `).join("");
+
+      filtros.querySelectorAll(".filtro").forEach((boton) => {
+        boton.addEventListener("click", () => {
+          seccionActiva = boton.dataset.seccion;
+          crearFiltros();
+          filtrarCartas();
+        });
+      });
+    }
+
+    function abrirPregunta(indice) {
+      cartaPendiente = indice;
+      const item = fragmentos[indice];
+      textoPregunta.textContent = item.pregunta;
+      inputRespuesta.value = "";
+      mensajeError.textContent = "";
+      inputRespuesta.dataset.respuestaCorrecta = normalizar(item.respuesta);
+
+      modal.showModal();
+      setTimeout(() => inputRespuesta.focus(), 50);
+    }
+
+    function crearCartas() {
+      const grupos = secciones.map((seccion) => {
+        const cartas = fragmentos.map((item, indice) => {
+          if (item.seccion !== seccion) return "";
+
+          const abierta = desbloqueadas.includes(indice);
+          const esFavorita = favoritos.includes(indice);
+
+          return `
+            <article class="carta" data-indice="${indice}"
+              data-seccion="${item.seccion}"
+              data-texto="${normalizar(item.texto)}">
+              <div class="carta-superior">
+                <span>Carta ${String(indice + 1).padStart(3, "0")}</span>
+                <span class="estado">${abierta ? "Abierta 💜" : "Sellada ✨"}</span>
+              </div>
+
+              ${abierta
+                ? `<p class="mensaje">${item.texto}</p>`
+                : `<div class="candado">
+                    <div class="candado-icono" aria-hidden="true">💌</div>
+                    <p>Hay un mensaje especial esperando por ti…</p>
+                    <button class="boton boton-abrir" type="button">Resolver pregunta</button>
+                  </div>`
+              }
+
+              ${abierta ? `
+                <div class="pie-carta">
+                  <span>Con cariño, para ti</span>
+                  <div class="acciones">
+                    <button class="accion boton-favorito ${esFavorita ? "favorito" : ""}"
+                      type="button"
+                      aria-label="${esFavorita ? "Quitar de favoritos" : "Añadir a favoritos"}"
+                      aria-pressed="${esFavorita}">${esFavorita ? "♥" : "♡"}</button>
+                    <button class="accion boton-copiar" type="button"
+                      aria-label="Copiar mensaje" title="Copiar mensaje">⧉</button>
+                  </div>
+                </div>
+              ` : ""}
+            </article>
+          `;
+        }).join("");
+
+        return `
+          <section class="grupo" data-grupo="${seccion}">
+            <div class="titulo-grupo">
+              <h2>${seccion}</h2>
+              <span class="contador"></span>
+            </div>
+            <div class="rejilla">${cartas}</div>
+          </section>
+        `;
+      }).join("");
+
+      coleccion.innerHTML = grupos;
+
+      coleccion.querySelectorAll(".boton-abrir").forEach((boton) => {
+        boton.addEventListener("click", () => {
+          const indice = Number(boton.closest(".carta").dataset.indice);
+          abrirPregunta(indice);
+        });
+      });
+
+      coleccion.querySelectorAll(".boton-favorito").forEach((boton) => {
+        boton.addEventListener("click", () => {
+          const indice = Number(boton.closest(".carta").dataset.indice);
+
+          favoritos = favoritos.includes(indice)
+            ? favoritos.filter((id) => id !== indice)
+            : [...favoritos, indice];
+
+          localStorage.setItem("universo-amor-favoritas-v4", JSON.stringify(favoritos));
+          crearCartas();
+        });
+      });
+
+      coleccion.querySelectorAll(".boton-copiar").forEach((boton) => {
+        boton.addEventListener("click", async () => {
+          const indice = Number(boton.closest(".carta").dataset.indice);
+          try {
+            await navigator.clipboard.writeText(fragmentos[indice].texto);
+            boton.textContent = "✓";
+            boton.title = "Copiado";
+            setTimeout(() => {
+              boton.textContent = "⧉";
+              boton.title = "Copiar mensaje";
+            }, 1200);
+          } catch {
+            boton.title = "No se pudo copiar";
+          }
+        });
+      });
+
+      filtrarCartas();
+    }
+
+    formulario.addEventListener("submit", (evento) => {
+      evento.preventDefault();
+
+      if (cartaPendiente === null) return;
+
+      const respuestaUsuario = normalizar(inputRespuesta.value);
+      const correcta = inputRespuesta.dataset.respuestaCorrecta;
+
+      if (respuestaUsuario !== correcta) {
+        mensajeError.textContent = "Casi… intenta otra vez, corazón 💜";
+        inputRespuesta.select();
+        return;
+      }
+
+      desbloqueadas = [...new Set([...desbloqueadas, cartaPendiente])];
+      localStorage.setItem("universo-amor-desbloqueadas-v4", JSON.stringify(desbloqueadas));
+
+      modal.close();
+      cartaPendiente = null;
+      crearCartas();
+    });
+
+    document.querySelector("#cancelar").addEventListener("click", () => modal.close());
+    modal.addEventListener("close", () => { cartaPendiente = null; });
+
+    function filtrarCartas() {
+      const consulta = normalizar(busqueda.value.trim());
+      let total = 0;
+
+      coleccion.querySelectorAll(".grupo").forEach((grupo) => {
+        let visibles = 0;
+
+        grupo.querySelectorAll(".carta").forEach((carta) => {
+          const coincideSeccion =
+            seccionActiva === "Todos" || carta.dataset.seccion === seccionActiva;
+
+          const coincideTexto =
+            normalizar(carta.dataset.texto).includes(consulta);
+
+          carta.hidden = !(coincideSeccion && coincideTexto);
+          if (!carta.hidden) visibles++;
+        });
+
+        grupo.hidden = visibles === 0;
+        grupo.querySelector(".contador").textContent =
+          `${visibles} ${visibles === 1 ? "carta" : "cartas"}`;
+        total += visibles;
+      });
+
+      sinResultados.classList.toggle("visible", total === 0);
+    }
+
+    busqueda.addEventListener("input", filtrarCartas);
+
+    crearFiltros();
+    crearCartas();
+  </script>
+</body>
+</html>
