@@ -16,11 +16,10 @@
       --tinta: #40334a;
       --suave: #786b82;
       --borde: #e6d8f0;
-      --sombra: 0 12px 32px rgba(79, 45, 104, 0.12);
+      --sombra: 0 12px 32px rgba(79, 45, 104, .12);
     }
 
     * { box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
 
     body {
@@ -49,8 +48,7 @@
       background: linear-gradient(135deg, #44245e, #8052a5 58%, #b17bc2);
     }
 
-    .portada::before,
-    .portada::after {
+    .portada::before, .portada::after {
       position: absolute;
       color: rgba(255,255,255,.13);
       font-size: 130px;
@@ -118,7 +116,7 @@
       border: 1px solid rgba(255,255,255,.7);
       border-radius: 12px;
       background: rgba(255,255,255,.94);
-      box-shadow: 0 18px 45px rgba(25, 12, 35, .35);
+      box-shadow: 0 18px 45px rgba(25,12,35,.35);
       transition: transform .25s ease;
     }
 
@@ -167,7 +165,7 @@
       padding: 18px 8px 7px;
       border-radius: 0 0 7px 7px;
       color: white;
-      background: linear-gradient(transparent, rgba(38, 17, 47, .75));
+      background: linear-gradient(transparent, rgba(38,17,47,.75));
       font-size: .76rem;
       text-align: center;
     }
@@ -195,8 +193,7 @@
       font-family: Arial, sans-serif;
     }
 
-    .busqueda:focus,
-    .respuesta:focus {
+    .busqueda:focus, .respuesta:focus {
       border-color: var(--purpura);
       box-shadow: 0 0 0 3px rgba(128,82,165,.13);
     }
@@ -385,6 +382,96 @@
 
     .sin-resultados.visible { display: block; }
 
+    /* Panel secreto de preguntas */
+    .panel-preguntas {
+      margin-top: 24px;
+      padding: 24px;
+      border: 1px solid var(--borde);
+      border-radius: 20px;
+      background: var(--papel);
+      box-shadow: var(--sombra);
+    }
+
+    .panel-preguntas[hidden] { display: none; }
+
+    .panel-encabezado {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .panel-etiqueta {
+      margin: 0 0 6px;
+      color: var(--purpura);
+      font-family: Arial, sans-serif;
+      font-size: .75rem;
+      font-weight: bold;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .panel-encabezado h2 {
+      margin: 0;
+      color: var(--purpura-oscuro);
+      font-size: 1.6rem;
+      font-weight: 500;
+    }
+
+    .panel-descripcion {
+      margin: 8px 0 0;
+      color: var(--suave);
+      line-height: 1.5;
+    }
+
+    .boton-cerrar-panel {
+      flex: 0 0 auto;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--borde);
+      border-radius: 50%;
+      color: var(--purpura-oscuro);
+      background: white;
+      cursor: pointer;
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .boton-cerrar-panel:hover {
+      color: white;
+      background: var(--purpura);
+    }
+
+    .lista-preguntas {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .item-pregunta {
+      padding: 15px;
+      border: 1px solid var(--borde);
+      border-radius: 13px;
+      background: #fcf8ff;
+    }
+
+    .item-pregunta p {
+      margin: 0;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .item-pregunta .pregunta-texto {
+      color: var(--purpura-oscuro);
+      font-weight: bold;
+    }
+
+    .item-pregunta .respuesta-texto {
+      margin-top: 7px;
+      color: var(--suave);
+    }
+
     dialog {
       width: min(440px, calc(100% - 28px));
       padding: 0;
@@ -460,6 +547,11 @@
       .rejilla { grid-template-columns: 1fr; }
     }
 
+    @media (max-width: 700px) {
+      .panel-preguntas { padding: 18px; }
+      .lista-preguntas { grid-template-columns: 1fr; }
+    }
+
     @media (max-width: 430px) {
       .collage { min-height: 290px; }
       .foto-uno { width: 49%; height: 67%; }
@@ -515,6 +607,21 @@
       <div id="filtros" class="filtros" aria-label="Filtrar por sección"></div>
     </div>
   </nav>
+
+  <section id="panelPreguntas" class="panel-preguntas contenedor" hidden>
+    <div class="panel-encabezado">
+      <div>
+        <p class="panel-etiqueta">Secreto desbloqueado ✨</p>
+        <h2>Preguntas y respuestas 💌</h2>
+        <p class="panel-descripcion">
+          Aquí están las preguntas y respuestas de todas las cartas.
+        </p>
+      </div>
+      <button id="cerrarPanel" class="boton-cerrar-panel" type="button"
+        aria-label="Cerrar panel">×</button>
+    </div>
+    <div id="listaPreguntas" class="lista-preguntas"></div>
+  </section>
 
   <main class="contenedor">
     <p class="bienvenida">
@@ -1226,7 +1333,15 @@
 
       {
         seccion: "Una última cosita 💜",
-        texto: "Si has llegado hasta aquí, quiero regalarte una última reflexión:\n\nA veces pensamos que para hacer sentir especial a alguien necesitamos grandes regalos, viajes extraordinarios o momentos sacados de una película. Pero yo creo que también existe magia en las cosas pequeñas: en preguntar cómo estuvo tu día, recordar algo que te gusta, escuchar una historia que ya has contado y seguir disfrutando de ella, o simplemente encontrar motivos para hacerte sonreír.\n\nEste pequeño universo nació de una idea sencilla: guardar en algún lugar todas esas palabras que a veces quisiera decirte.\n\nNo sé cuántas páginas tendrá nuestra historia, pero me gustaría que nunca perdiéramos las ganas de escribirla.\n\nCon mucho cariño, para alguien que se ha convertido en una parte muy bonita de mis pensamientos. 💜",
+        texto: `Si has llegado hasta aquí, quiero regalarte una última reflexión:
+
+A veces pensamos que para hacer sentir especial a alguien necesitamos grandes regalos, viajes extraordinarios o momentos sacados de una película. Pero yo creo que también existe magia en las cosas pequeñas: en preguntar cómo estuvo tu día, recordar algo que te gusta, escuchar una historia que ya has contado y seguir disfrutando de ella, o simplemente encontrar motivos para hacerte sonreír.
+
+Este pequeño universo nació de una idea sencilla: guardar en algún lugar todas esas palabras que a veces quisiera decirte.
+
+No sé cuántas páginas tendrá nuestra historia, pero me gustaría que nunca perdiéramos las ganas de escribirla.
+
+Con mucho cariño, para alguien que se ha convertido en una parte muy bonita de mis pensamientos. 💜`,
         pregunta: "¿De qué nació este pequeño universo?",
         respuesta: "de guardar palabras para ti"
       }
@@ -1241,6 +1356,9 @@
     const textoPregunta = document.querySelector("#pregunta");
     const mensajeError = document.querySelector("#error");
     const sinResultados = document.querySelector("#sinResultados");
+    const panelPreguntas = document.querySelector("#panelPreguntas");
+    const listaPreguntas = document.querySelector("#listaPreguntas");
+    const cerrarPanel = document.querySelector("#cerrarPanel");
 
     const secciones = [...new Set(fragmentos.map(item => item.seccion))];
     let seccionActiva = "Todos";
@@ -1284,6 +1402,30 @@
           filtrarCartas();
         });
       });
+    }
+
+    function abrirPanelPreguntas() {
+      listaPreguntas.replaceChildren();
+
+      fragmentos.forEach((fragmento, indice) => {
+        const tarjeta = document.createElement("article");
+        tarjeta.className = "item-pregunta";
+
+        const pregunta = document.createElement("p");
+        pregunta.className = "pregunta-texto";
+        pregunta.textContent =
+          `Carta ${String(indice + 1).padStart(3, "0")}: ${fragmento.pregunta}`;
+
+        const respuesta = document.createElement("p");
+        respuesta.className = "respuesta-texto";
+        respuesta.textContent = `Respuesta: ${fragmento.respuesta}`;
+
+        tarjeta.append(pregunta, respuesta);
+        listaPreguntas.appendChild(tarjeta);
+      });
+
+      panelPreguntas.hidden = false;
+      panelPreguntas.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     function abrirPregunta(indice) {
@@ -1356,8 +1498,7 @@
 
       coleccion.querySelectorAll(".boton-abrir").forEach((boton) => {
         boton.addEventListener("click", () => {
-          const indice = Number(boton.closest(".carta").dataset.indice);
-          abrirPregunta(indice);
+          abrirPregunta(Number(boton.closest(".carta").dataset.indice));
         });
       });
 
@@ -1377,6 +1518,7 @@
       coleccion.querySelectorAll(".boton-copiar").forEach((boton) => {
         boton.addEventListener("click", async () => {
           const indice = Number(boton.closest(".carta").dataset.indice);
+
           try {
             await navigator.clipboard.writeText(fragmentos[indice].texto);
             boton.textContent = "✓";
@@ -1396,7 +1538,6 @@
 
     formulario.addEventListener("submit", (evento) => {
       evento.preventDefault();
-
       if (cartaPendiente === null) return;
 
       const respuestaUsuario = normalizar(inputRespuesta.value);
@@ -1409,7 +1550,10 @@
       }
 
       desbloqueadas = [...new Set([...desbloqueadas, cartaPendiente])];
-      localStorage.setItem("universo-amor-desbloqueadas-v4", JSON.stringify(desbloqueadas));
+      localStorage.setItem(
+        "universo-amor-desbloqueadas-v4",
+        JSON.stringify(desbloqueadas)
+      );
 
       modal.close();
       cartaPendiente = null;
@@ -1429,7 +1573,6 @@
         grupo.querySelectorAll(".carta").forEach((carta) => {
           const coincideSeccion =
             seccionActiva === "Todos" || carta.dataset.seccion === seccionActiva;
-
           const coincideTexto =
             normalizar(carta.dataset.texto).includes(consulta);
 
@@ -1446,7 +1589,22 @@
       sinResultados.classList.toggle("visible", total === 0);
     }
 
-    busqueda.addEventListener("input", filtrarCartas);
+    busqueda.addEventListener("input", () => {
+      if (busqueda.value.trim() === "11:11") {
+        busqueda.value = "";
+        filtrarCartas();
+        abrirPanelPreguntas();
+        return;
+      }
+
+      filtrarCartas();
+    });
+
+    cerrarPanel.addEventListener("click", () => {
+      panelPreguntas.hidden = true;
+      busqueda.value = "";
+      filtrarCartas();
+    });
 
     crearFiltros();
     crearCartas();
